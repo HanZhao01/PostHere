@@ -8,25 +8,33 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 const { connectToDB, PostHub } = require("./database");
 
+app.use(express.static(__dirname + "/public"));
+
 app.post("/signup", asyncHandler(async (req, res) => {
     const username = req.body.username
     const password = req.body.password
     const newUser = new PostHub({
         Username: username,
         Password: password,
-        Post: None,
-        Date: None,
-        Likes: None,
-        Comments: None,
+        Post: null,
+        Date: null,
+        Likes: null,
+        Comments: null
     });
     await newUser.save()
     res.status(201).json(newUser);
 }));
 
+//// hw7 ///////
+app.post("/new", asyncHandler(async (req, res) => {
+    const frontWord = req.body.front
+    const backWord = req.body.back
+    const newCard = new Flashcard({front: frontWord, back: backWord}) ;
+    await newCard.save()
+    res.status(201).json(newCard);
+}));
 
-
-
-
+////////////
 
 
 
