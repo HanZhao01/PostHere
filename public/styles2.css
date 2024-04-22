@@ -1,0 +1,27 @@
+.post {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.post-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.post-body p {
+    font-size: 16px;
+    color: #666;
+}
+
+.post-footer span {
+    font-size: 14px;
+    color: #999;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}

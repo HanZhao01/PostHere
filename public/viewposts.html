@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Posts</title>
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+    <div class="container">
+        <h1>View Posts</h1>
+        <div id="postsContainer">
+            <!-- Posts will be loaded here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            fetch('/viewposts')
+            .then(response => response.json())
+            .then(posts => {
+                const container = document.getElementById('postsContainer');
+                if (posts.length === 0) {
+                    container.innerHTML = '<p>No posts to display.</p>';
+                } else {
+                    posts.forEach(post => {
+                        const postElement = document.createElement('div');
+                        postElement.className = 'post';
+                        postElement.innerHTML = `
+                            <div class="post-header">
+                                <h3>${post.Username}</h3>
+                            </div>
+                            <div class="post-body">
+                                <p>${post.Post}</p>
+                            </div>
+                            <div class="post-footer">
+                                <span>Likes: <span id="likes-${post._id}">${post.Likes || 0}</span></span>
+                            </div>
+                            <hr>
+                        `;
+                        // Create a Like button and attach an event listener to it
+                        const likeButton = document.createElement('button');
+                        likeButton.textContent = 'Like';
+                        likeButton.addEventListener('click', function() {
+                            const postId = post._id;
+                            likePost(postId);
+                        });
+                        postElement.querySelector('.post-footer').appendChild(likeButton);
+
+                        container.appendChild(postElement);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                container.innerHTML = '<p>Error loading posts: ' + error.message + '</p>';
+            });
+        };
+
+        function likePost(postId) {
+            console.log(postId)
+            fetch('/likepost', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ postId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.message === "Like updated successfully") {
+                    document.getElementById('likes-' + postId).textContent = data.likes;
+                } else {
+                    alert('Failed to update likes');
+                }
+            })
+            .catch(error => {
+                console.error('Error liking post:', error);
+                alert('Error liking post: ' + error.message);
+            });
+        }
+    </script>
+</body>
+</html>

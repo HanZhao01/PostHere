@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, <span id="usernameDisplay"></span>!</h1>
+        <div class="buttons">
+            <button id="makePostBtn">Make a Post</button>
+            <button id="viewPostsBtn">Watch Others' Posts</button>
+        </div>
+    </div>
+
+    <script>
+        // Get the username from URL query parameters
+        const params = new URLSearchParams(window.location.search);
+        const username = params.get('username');
+        document.getElementById('usernameDisplay').textContent = username;
+
+        //document.getElementById('makePostBtn').addEventListener('click', function() {
+          //  window.location.href = '/makepost'; // Redirect to make post page
+        //});
+
+        //document.getElementById('viewPostsBtn').addEventListener('click', function() {
+          //  window.location.href = '/viewposts'; // Redirect to view posts page
+        //});
+        // Button to make a post, using JavaScript to handle navigation
+        document.getElementById('makePostBtn').addEventListener('click', function() {
+            const username = new URLSearchParams(window.location.search).get('username');
+            window.location.href = '/makepost.html?username=' + encodeURIComponent(username);
+        });
+        //document.getElementById('viewPostsBtn').addEventListener('click', function() {
+          //  window.location.href = '/viewposts.html'; // Ensure this points to the correct HTML file
+        //});
+        document.getElementById('viewPostsBtn').addEventListener('click', function() {
+            console.log('Redirecting to viewposts.html');
+            window.location.href = '/viewposts.html'; // Ensure this points to the correct HTML file
+        });
+
+
+    </script>
+</body>
+</html>
